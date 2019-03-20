@@ -22,16 +22,19 @@ namespace Cash_Machine.Controllers
         }
 
         [HttpPost]
-        public ViewResult EnterAtm(string cardNumber)
+        public ActionResult EnterAtm(string cardNumber)
         {        
             if (_cardService.CheckCard(cardNumber))
             {
-                return View("PinInput");
+                return RedirectToAction("");
             }
             else
             {
                 return View("Error");
             }
         }
+
+
+
     }
 }
