@@ -1,6 +1,6 @@
-﻿using Domain.Abstract;
-using Domain.Entities;
+﻿using Domain.Entities;
 using System.Collections.Generic;
+using CM.Services.interfaces.Abstract;
 
 namespace Domain.Concrete
 {
