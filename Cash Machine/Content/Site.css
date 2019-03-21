@@ -23,60 +23,8 @@ body {
 body {
     background:white;
 }
-
-#header {
-    text-align: center;
-    font-family: 'Share Tech Mono', monospace;
-}
-
-#calc {  
-    text-align: center;
-    width: 400px; 
-    margin-left: 250px;
-    /*display: block;*/
-    /*border-radius:8px;*/
-    /*border: 1px solid;*/
-    padding:20px;
-    margin-top:1px;
-    margin-left:auto;
-    margin-right:auto;
-}
-
-#display {
-    background: whitesmoke;
-    /*padding: 8px;*/
-    margin:16px 12px 10px 16px;
-    /*margin-right: 70px;*/
-    text-align: center;
-    font-family: 'Share Tech Mono', monospace;
-    /*border-radius:8px;*/
-}
-
 #result p {
-    width: 310px;
-    margin-left: 35px;
     font-size: 1.8em;   
-}
-
-#result {
-    text-align: left;
-    padding-right: 20px;
-    padding-left: 10px;
-}
-
-#keyboard {
-    display: inline-block;  
-    text-align: center;
-    margin-bottom:8px;
-}
-
-.row {
-    margin-top: 4px;
-}
-
-.last-row {
-    float:left;
-    margin-top: -11.5%;
 }
 
 button {
@@ -84,17 +32,12 @@ button {
     margin: 2px;
 }
 
-.invisible {
-    width:0;
+
+#calc {
+    text-align: center;
+    width: 400px;
 }
 
-.btn-delete {
-    margin-left: 68px;
+.top-buffer {
+    margin-top: 10px;
 }
-
-.btn-result {  
-    float:right;
-    margin-left:4px;  
-    height: 74px;
-}
-
