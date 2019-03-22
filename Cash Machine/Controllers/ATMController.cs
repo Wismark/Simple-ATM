@@ -3,57 +3,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Autofac;
 using CM.Services;
+using CM.Services.interfaces.Abstract;
 
 namespace Cash_Machine.Controllers
 {
     public class AtmController : Controller
     {
-        private readonly CardHandler _cardService;
-        public AtmController(CardHandler cardH)
+        private readonly ICardHandler _cardService;
+        public AtmController() //ICardHandler handler
         {
-            _cardService = cardH;
+          //  DiResolver.GetContainer().Resolve<ICardHandler>();
+            _cardService = DiResolver.GetContainer().Resolve<ICardHandler>();
         }
 
-        public AtmController( )
-        { }
-
         [HttpGet]
-        public ActionResult EnterAtm()
+        public ViewResult EnterAtm()
         {
             return View();
         }
 
         [HttpPost]
-        public JsonResult EnterAtm(string cardNumber)
+        public ActionResult EnterAtm(string cardNumber)
         {
-            //if (_cardService.CheckCard(cardNumber)) 
-            //{
-            //   return Json(new { url = "/Atm/PinCodeCheck?cardNumber="+cardNumber});
-            //}
-            return Json(new { url = "/Atm/CardError/" }, JsonRequestBehavior.AllowGet);
+            if (_cardService.CheckCard(cardNumber))
+            {
+                Session["CardNumber"] = cardNumber;
+                return RedirectToAction("PinCodeCheck");
+            }
+
+            return View("CardError");
         }
 
         [HttpGet]
-        public ActionResult PinCodeCheck(string cardNumber)
+        public ViewResult PinCodeCheck()
         {
-            if (cardNumber != null)
-            {
-                ViewBag.card = cardNumber;
-                return View();
-            }
-
-            return RedirectToAction("EnterAtm");
+            return View();
         }
 
         [HttpPost]
-        public JsonResult PinCodeCheck(string pinCode, string cardNumber)
+        public ActionResult PinCodeCheck(string pinCode)
         {
-            if (_cardService.CheckPinCode(pinCode, cardNumber))
+            string cardNumber = Session["CardNumber"] as string;
+
+            if (_cardService.CheckPinCode(pinCode, cardNumber)) //_cardService.CheckPinCode(pinCode, cardNumber)
             {
-                return Json(new { url = "/Atm/GetOperations/" });
-            } 
-            return Json(new { url = "/Atm/PinCodeCheck/" });
+               return RedirectToAction("GetOperations", "Atm");
+            }
+
+            if (_cardService.CheckOnAttempts(cardNumber) == 0)
+                return RedirectToAction("CardIsBlockedError", "Atm");
+
+            return RedirectToAction("PinCodeCheck", "Atm", new { cardNumber = cardNumber });
         }
 
         [HttpGet]
@@ -64,6 +66,12 @@ namespace Cash_Machine.Controllers
 
         [HttpGet]
         public ActionResult GetOperations()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ViewResult CardIsBlockedError()
         {
             return View();
         }

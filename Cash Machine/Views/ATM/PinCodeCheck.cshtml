@@ -1,192 +1,185 @@
 ﻿
-<div class="container" id="calc">
-    <div><h4>Pin</h4></div>
-    <div id="result">
-        <p class="form-control"></p></div>
-    <div class="container" id="num">
-        <div class="row d-inline-flex">
-            <div class="col">
-                <button class="btn btn-info dev-btn-number" value="1">1</button>
-                <button class="btn btn-info dev-btn-number" value="2">2</button>
-                <button class="btn btn-info dev-btn-number" value="3">3</button>
+    <div class="container" id="calc">
+        <div><h4>Pin</h4></div>
+        <div id="result">
+            <p class="form-control"></p>
+        </div>
+        <div class="container" id="num">
+            <div class="row d-inline-flex">
+                <div class="col">
+                    <button class="btn btn-info dev-btn-number" value="1">1</button>
+                    <button class="btn btn-info dev-btn-number" value="2">2</button>
+                    <button class="btn btn-info dev-btn-number" value="3">3</button>
+                </div>
             </div>
-        </div>
-        <div class="row d-inline-flex">
-            <div class="col">
-                <button class="btn btn-info dev-btn-number" value="4">4</button>
-                <button class="btn btn-info dev-btn-number" value="5">5</button>
-                <button class="btn btn-info dev-btn-number" value="6">6</button>
+            <div class="row d-inline-flex">
+                <div class="col">
+                    <button class="btn btn-info dev-btn-number" value="4">4</button>
+                    <button class="btn btn-info dev-btn-number" value="5">5</button>
+                    <button class="btn btn-info dev-btn-number" value="6">6</button>
+                </div>
             </div>
-        </div>
-        <div class="row d-inline-flex">
-            <div class="col">
-                <button class="btn btn-info dev-btn-number" value="7">7</button>
-                <button class="btn btn-info dev-btn-number" value="8">8</button>
-                <button class="btn btn-info dev-btn-number" value="9">9</button>
+            <div class="row d-inline-flex">
+                <div class="col">
+                    <button class="btn btn-info dev-btn-number" value="7">7</button>
+                    <button class="btn btn-info dev-btn-number" value="8">8</button>
+                    <button class="btn btn-info dev-btn-number" value="9">9</button>
+                </div>
             </div>
-        </div>
-        <div class="col">
-            <button class="btn btn-info dev-btn-number" value="0">0</button>
-        </div>
-        <div class="row d-inline-flex top-buffer">
             <div class="col">
-                <button class="btn btn-primary" id="ce">CE</button>
-                <button class="btn btn-primary" id="ac">Clear</button>
-                <button class="btn btn-primary" id="ok">OK</button>
-                <button class="btn btn-primary" id="exit">Exit</button>
+                <button class="btn btn-info dev-btn-number" value="0">0</button>
+            </div>
+            <div class="row d-inline-flex top-buffer">
+                <div class="col">
+                    <button class="btn btn-primary" id="ce">CE</button>
+                    <button class="btn btn-primary" id="ac">Clear</button>
+                    <button class="btn btn-primary" id="ok">OK</button>
+                    <button class="btn btn-primary" id="exit">Exit</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-
-
-@section scripts
+    @section scripts
 {
-    <script type="text/javascript">
+        <script type="text/javascript">
 
-        $(document).ready(function () {
-            var cardNum = "";
-            var pinCode = "";
-            $('.dev-btn-number').on('click',
-                function () {
+            $(document).ready(function () {
+                var cardNum = "";
+                var pinCode = "";
+                $('.dev-btn-number').on('click', function () {
                     pinCode = pinCode + $(this).val();
                     if (pinCode.length === 4) {
                         var elements = document.getElementsByClassName("dev-btn-number");
-                        BlockButtons(true);
+                        blockButtons(true);
                     }
                     $('#result p').html(pinCode);
                 });
 
-            $('#ac').on('click',
-                function () {
-                    BlockButtons(false);
+                $('#ac').on('click', function () {
+                    blockButtons(false);
                     pinCode = "";
                     $('#result p').html("");
                 });
 
-            $('#exit').on('click',
-                function () {
+                $('#exit').on('click', function () {
                     window.location.href = "/Atm/EnterAtm/";
                 });
 
-            $('#ce').on('click',
-                function () {
-                    BlockButtons(false);
+                $('#ce').on('click', function () {
+                    blockButtons(false);
                     pinCode = $('#result p').html();
-                    pinCode = pinCode.slice(0, -1);                
+                    pinCode = pinCode.slice(0, -1);
                     $('#result p').html(pinCode);
                 });
 
-            $('#ok').on('click',
-                function () {
-                    cardNum = @ViewBag.card
-                   if (pinCode.length === 4) {
-                    $.ajax({
-                        type: "Post",
-                        url: '/Atm/PinCodeCheck?cardNumber=' + cardNum + "&pinCode="+pinCode,
-                        dataType: "json",
-                        success: function (result) {
-                            window.location.href = result.url;
-                        },
-                        error: function (httpRequest, textStatus, errorThrown) {
-                            alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
-                        }
-                       });
-                   }
+                $('#ok').on('click', function () {
+                    if (pinCode.length === 4) {
+                        $.ajax({
+                            type: "Post",
+                            url: '/Atm/PinCodeCheck?cardNumber=' + cardNum + "&pinCode=" + pinCode,
+                            dataType: "json",
+                            success: function (result) {
+                                //  window.location.href = result.url;
+                            },
+                            error: function (httpRequest, textStatus, errorThrown) {
+                                alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
+                            }
+                        });
+                    }
                 });
 
-            function BlockButtons(block) {
-                var elements = document.getElementsByClassName("dev-btn-number");
-                for (var i = 0; i < elements.length; i++) {
-                    if (block) {
-                        elements[i].disabled = true;
-                    } else {
-                        elements[i].disabled = false;
+                function blockButtons(block) {
+                    var elements = document.getElementsByClassName("dev-btn-number");
+                    for (var i = 0; i < elements.length; i++) {
+                        if (block) {
+                            elements[i].disabled = true;
+                        } else {
+                            elements[i].disabled = false;
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        //$(document).ready(function () {
-        //    var eq = "";
-        //    var curNumber = "";
-        //    var entry = "";
-        //    var reset = false;
-        //    var cardNum = "";
+                //$(document).ready(function () {
+                //    var eq = "";
+                //    var curNumber = "";
+                //    var entry = "";
+                //    var reset = false;
+                //    var cardNum = "";
 
-        //    $("button").click(function () {
-        //        entry = $(this).attr("value");
-        //        var elements = document.getElementsByClassName("btn-info");
-        //        var i;
-        //        if (entry === "ac") {
-        //            elements.forEach(s => { s.elements.disabled = false });
-        //            entry = "";
-        //            eq = "";
-        //            curNumber = "";
-        //            $('#result p').html(entry);
-        //        } else
-        //            if (entry === "ce") {
-        //                elements.forEach(s => s.elements.disabled = false);
-        //                curNumber = document.getElementById("result").innerText;
-        //                if (curNumber.length === 5 || curNumber.length === 10 || curNumber.length === 15) {
-        //                    curNumber = curNumber.slice(0, -2);
-        //                    $('#result p').html(curNumber);
-        //                }
-        //                else {
-        //                    if (eq.length > 1) {
-        //                        eq = eq.slice(0, -1);
-        //                        $('#previous p').html(eq);
-        //                    } else {
-        //                        eq = "";
-        //                        $('#result p').html(eq);
-        //                    }
+                //    $("button").click(function () {
+                //        entry = $(this).attr("value");
+                //        var elements = document.getElementsByClassName("btn-info");
+                //        var i;
+                //        if (entry === "ac") {
+                //            elements.forEach(s => { s.elements.disabled = false });
+                //            entry = "";
+                //            eq = "";
+                //            curNumber = "";
+                //            $('#result p').html(entry);
+                //        } else
+                //            if (entry === "ce") {
+                //                elements.forEach(s => s.elements.disabled = false);
+                //                curNumber = document.getElementById("result").innerText;
+                //                if (curNumber.length === 5 || curNumber.length === 10 || curNumber.length === 15) {
+                //                    curNumber = curNumber.slice(0, -2);
+                //                    $('#result p').html(curNumber);
+                //                }
+                //                else {
+                //                    if (eq.length > 1) {
+                //                        eq = eq.slice(0, -1);
+                //                        $('#previous p').html(eq);
+                //                    } else {
+                //                        eq = "";
+                //                        $('#result p').html(eq);
+                //                    }
 
-        //                    $('#previous p').html(eq);
+                //                    $('#previous p').html(eq);
 
-        //                    if (curNumber.length > 1) {
-        //                        curNumber = curNumber.slice(0, -1);
-        //                        $('#result p').html(curNumber);
-        //                    } else {
-        //                        curNumber = 0;
-        //                        $('#result p').html();
-        //                    }
-        //                }
+                //                    if (curNumber.length > 1) {
+                //                        curNumber = curNumber.slice(0, -1);
+                //                        $('#result p').html(curNumber);
+                //                    } else {
+                //                        curNumber = 0;
+                //                        $('#result p').html();
+                //                    }
+                //                }
 
-        //            } else if (entry === "OK") {
-        //                alert(eq);
-        //                var str = document.getElementById("result").innerText;
-        //                $.ajax({
-        //                    type: "Post",
-        //                    url: '/Atm/PinCodeCheck?cardNumber=' + str,
-        //                    dataType: "json",
-        //                    success: function (result) {
-        //                        window.location.href = result.url;                               
-        //                    },
-        //                    error: function (httpRequest, textStatus, errorThrown) {
-        //                        alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
-        //                    }
-        //                });
+                //            } else if (entry === "OK") {
+                //                alert(eq);
+                //                var str = document.getElementById("result").innerText;
+                //                $.ajax({
+                //                    type: "Post",
+                //                    url: '/Atm/PinCodeCheck?cardNumber=' + str,
+                //                    dataType: "json",
+                //                    success: function (result) {
+                //                        window.location.href = result.url;
+                //                    },
+                //                    error: function (httpRequest, textStatus, errorThrown) {
+                //                        alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
+                //                    }
+                //                });
 
-        //            } else if (entry === "Exit") {
-        //                window.location.href = "/Atm/EnterAtm/";
-        //            } else  {
-        //                if (reset) {
-        //                    eq = entry;
-        //                    curNumber = entry;
-        //                    reset = false;
-        //                } else {
-        //                    eq += entry;
-        //                    curNumber += "*";
-        //                }
-        //                $('#result p').html(curNumber);
-        //            }
+                //            } else if (entry === "Exit") {
+                //                window.location.href = "/Atm/EnterAtm/";
+                //            } else  {
+                //                if (reset) {
+                //                    eq = entry;
+                //                    curNumber = entry;
+                //                    reset = false;
+                //                } else {
+                //                    eq += entry;
+                //                    curNumber += "*";
+                //                }
+                //                $('#result p').html(curNumber);
+                //            }
 
-        //        if (curNumber.length === 4) {
-        //            elements.forEach(s => s.elements.disabled = true);
-        //        }
-        //    });
-        //});
-    </script>
-}
+                //        if (curNumber.length === 4) {
+                //            elements.forEach(s => s.elements.disabled = true);
+                //        }
+                //    });
+                //});
+        </script>
+    }
