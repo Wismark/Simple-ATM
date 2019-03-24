@@ -45,11 +45,9 @@ namespace CM.Services
 
         
 
-        public int CheckOnAttempts(string cardNumber)
+        public void BlockCard(string cardNumber)
         {
-            //_attemptsCount--;
-            //if (_attemptsCount == 0) ;//_repository.BlockCard(cardNumber);
-             return 0;
+            _repository.BlockCard(cardNumber);
         }
 
 

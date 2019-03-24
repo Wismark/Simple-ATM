@@ -1,19 +1,35 @@
-﻿
-@{
-    Layout = null;
+﻿<div class="container" id="calc">
+    <div><h4>Operations</h4></div>
+    <div class="container">
+        <div class="row d-inline-flex top-buffer">
+            <div class="col">
+                <button class="btn btn-primary"  style='width:auto' id="with">Withdraw</button>
+                <button class="btn btn-primary"  style='width:auto' id="bal">Balance</button>
+                <button class="btn btn-primary"  style='width:auto' id="exit">Exit</button>
+            </div>
+        </div>
+            <span id="Error"></span>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#with').on('click', function () {
+
+            });
+
+            $('#bal').on('click', function () {
+
+            });
+
+            $('#exit').on('click', function () {
+                window.location.href = "/Atm/EnterAtm/";
+            });
+        });
+    </script>
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Operations</title>
-</head>
-<body>
-<div>
-    <button class="btn btn-primary" id="ce">Balance</button>
-    <button class="btn btn-primary" id="ac">Withdraw</button>
-</div>
-</body>
-</html>

@@ -25,37 +25,56 @@ namespace Cash_Machine.Controllers
         }
 
         [HttpPost]
-        public ActionResult EnterAtm(string cardNumber)
+        public JsonResult EnterAtm(string cardNumber)
         {
             if (_cardService.CheckCard(cardNumber))
             {
                 Session["CardNumber"] = cardNumber;
-                return RedirectToAction("PinCodeCheck");
+                // return RedirectToAction("PinCodeCheck");
+                return Json(new { success = true });
             }
 
-            return View("CardError");
+            return Json(new { success = false });
         }
 
         [HttpGet]
-        public ViewResult PinCodeCheck()
+        public ActionResult PinCodeCheck()
         {
-            return View();
+            var cardNumber = Session["CardNumber"] as string;
+            if (cardNumber != null)
+            {
+                Session["AttemptsNumber"] = 4;
+                return View();
+            }
+            return new HttpNotFoundResult("404");
         }
 
         [HttpPost]
-        public ActionResult PinCodeCheck(string pinCode)
+        public JsonResult PinCodeCheck(string pinCode)
         {
             string cardNumber = Session["CardNumber"] as string;
+            int? attemptsNum = (int)Session["AttemptsNumber"];
+
+            if(cardNumber==null) return Json(new { error = true });
 
             if (_cardService.CheckPinCode(pinCode, cardNumber)) //_cardService.CheckPinCode(pinCode, cardNumber)
             {
-               return RedirectToAction("GetOperations", "Atm");
+               //return RedirectToAction("GetOperations", "Atm");
+               return Json(new { success = true });
+            }
+               
+            attemptsNum--;
+            Session["AttemptsNumber"] = attemptsNum;
+            if (attemptsNum == 0)
+            {
+                // return RedirectToAction("CardIsBlockedError", "Atm");
+                Session.Clear();
+                _cardService.BlockCard(cardNumber);
+                return Json(new { blocked = true });
             }
 
-            if (_cardService.CheckOnAttempts(cardNumber) == 0)
-                return RedirectToAction("CardIsBlockedError", "Atm");
-
-            return RedirectToAction("PinCodeCheck", "Atm", new { cardNumber = cardNumber });
+            return Json(new { success = false , attempts = attemptsNum });
+            //return RedirectToAction("PinCodeCheck", "Atm", new { cardNumber = cardNumber });
         }
 
         [HttpGet]

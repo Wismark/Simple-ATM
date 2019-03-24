@@ -3,7 +3,7 @@
         <div><h4>Pin</h4></div>
         <div id="result">
             <p class="form-control"></p>
-        </div>
+        </div>   
         <div class="container" id="num">
             <div class="row d-inline-flex">
                 <div class="col">
@@ -36,6 +36,7 @@
                     <button class="btn btn-primary" id="ok">OK</button>
                     <button class="btn btn-primary" id="exit">Exit</button>
                 </div>
+                <span id="Error"></span>
             </div>
         </div>
     </div>
@@ -81,7 +82,17 @@
                             url: '/Atm/PinCodeCheck?cardNumber=' + cardNum + "&pinCode=" + pinCode,
                             dataType: "json",
                             success: function (result) {
-                                //  window.location.href = result.url;
+                                if (result.error) window.location.href = "/Atm/EnterAtm"; else {
+                                if (result.blocked) window.location.href = "/Atm/CardIsBlockedError/"; else {
+                                if (result.success) {
+                                    window.location.href = "/Atm/GetOperations/";
+                                } else {                             
+                                var ac = document.getElementById("ac");
+                                ac.click();
+                                alert("Pin code is not correct! Attempts left:" + result.attempts);
+                                       }
+                                } }
+                                // $('#Error').html("Pin code is not correct! Attempts left:" + result.attempts);
                             },
                             error: function (httpRequest, textStatus, errorThrown) {
                                 alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);

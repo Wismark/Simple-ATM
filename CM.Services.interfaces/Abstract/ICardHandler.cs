@@ -10,7 +10,6 @@ namespace CM.Services.interfaces.Abstract
     {
         bool CheckPinCode(string pin, string card);
         bool CheckCard(string card);
-
-        int CheckOnAttempts(string card);
+        void BlockCard(string cardNumber);
     }
 }

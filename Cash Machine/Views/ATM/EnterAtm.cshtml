@@ -36,7 +36,7 @@
                 <div class="col">
                     <button class="btn btn-primary" id="ce">CE</button>
                     <button class="btn btn-primary" id="ac">Clear</button>
-                    <button class="btn btn-primary" id="ok" onclick="location.href='Atm/EnterAtm?cardNumber=' + document.getElementById('cardNumber').textContent">OK</button>
+                    <button class="btn btn-primary" id="ok">OK</button>
                 </div>
             </div>
         </div>
@@ -51,8 +51,6 @@
         $(document).ready(function () {
             var displayCardNum = "";
             var cardNum = "";
-            var okButton = document.getElementById("ok");
-            okButton.disabled = true;
 
             function blockButtons(block) {
                 var elements = document.getElementsByClassName("dev-btn-number");
@@ -60,10 +58,8 @@
                 for (var i = 0; i < elements.length; i++) {
                     if (block) {
                         elements[i].disabled = true;                      
-                        okButton.disabled = false;
                     } else {
                         elements[i].disabled = false;
-                        okButton.disabled = true;
                     }
                 }
             }
@@ -105,20 +101,19 @@
 
             $('#ok').on('click', function () {
                 if (cardNum.length === 16) {
-
-                    //alert(cardNum);
-                    //document.getElementById('cardNumber').textContent = cardNum;
-                    //alert($('#cardNumber').text);  
-                    //$.post({
-                    //    type: "POST",
-                    //    url: '/Atm/EnterAtm?cardNumber=' + cardNum,
-                    //    success: function (result) {
-                    //        // window.location.href = result.url;
-                    //    },
-                    //    error: function (httpRequest, textStatus, errorThrown) {
-                    //        alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
-                    //    }
-                    //});
+                    $.post({
+                        type: "POST",
+                        url: '/Atm/EnterAtm?cardNumber=' + cardNum,
+                        success: function (result) {
+                            if (result.success) {
+                                window.location.href = "/Atm/PincodeCheck/?cardNumber="+cardNum;
+                            } else
+                                window.location.href = "/Atm/CardError/";
+                        },
+                        error: function (httpRequest, textStatus, errorThrown) {
+                            alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
+                        }
+                    });
                 }
             });
 
