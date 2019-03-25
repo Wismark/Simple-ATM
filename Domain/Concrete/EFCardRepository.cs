@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using CM.Entites.Entities;
 using CM.Services.interfaces.Abstract;
 
@@ -86,5 +88,20 @@ namespace Domain.Concrete
             }
         }
 
+        public byte[] Hash(string value)
+        {
+            byte[] salt = Encoding.ASCII.GetBytes("YYLmfY6IehjZMQbv5PehSMfV11CdQxLUF1bgIAdeQX");
+            return Hash(Encoding.UTF8.GetBytes(value), salt);
+        }
+
+        private byte[] Hash(byte[] value, byte[] salt)
+        {
+            byte[] saltedValue = value.Concat(salt).ToArray();
+            // Alternatively use CopyTo.
+            //var saltedValue = new byte[value.Length + salt.Length];
+            //value.CopyTo(saltedValue, 0);
+            //salt.CopyTo(saltedValue, value.Length);
+            return new SHA256Managed().ComputeHash(saltedValue);
+        }
     }
 }

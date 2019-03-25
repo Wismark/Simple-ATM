@@ -10,7 +10,7 @@ namespace CM.Entites.Entities
         
         public bool IsBlocked { get; set; }
 
-        public string PinCode { get; set; }
+        public byte[] PinCode { get; set; }
 
         public  decimal Balance { get; set; }
 

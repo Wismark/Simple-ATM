@@ -10,5 +10,6 @@ namespace CM.Services.interfaces.Abstract
         bool BlockCard(string cardNumber);
         bool RegisterOperation(string cardNumber, OperationType type);
         bool Withdraw(string cardNumber, int sum);
+        byte[] Hash(string value);
     }
 }
