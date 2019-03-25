@@ -1,0 +1,116 @@
+﻿<div class="container" id="calc">
+    <div><h4>Withdraw</h4></div>
+    <div id="result">
+        <p class="form-control"></p>
+    </div>   
+    <div class="container" id="num">
+        <div class="row d-inline-flex">
+            <div class="col">
+                <button class="btn btn-info dev-btn-number" value="1">1</button>
+                <button class="btn btn-info dev-btn-number" value="2">2</button>
+                <button class="btn btn-info dev-btn-number" value="3">3</button>
+            </div>
+        </div>
+        <div class="row d-inline-flex">
+            <div class="col">
+                <button class="btn btn-info dev-btn-number" value="4">4</button>
+                <button class="btn btn-info dev-btn-number" value="5">5</button>
+                <button class="btn btn-info dev-btn-number" value="6">6</button>
+            </div>
+        </div>
+        <div class="row d-inline-flex">
+            <div class="col">
+                <button class="btn btn-info dev-btn-number" value="7">7</button>
+                <button class="btn btn-info dev-btn-number" value="8">8</button>
+                <button class="btn btn-info dev-btn-number" value="9">9</button>
+            </div>
+        </div>
+        <div class="col">
+            <button class="btn btn-info dev-btn-number" value="0">0</button>
+        </div>
+        <div class="row d-inline-flex top-buffer">
+            <div class="col">
+                <button class="btn btn-primary" id="ce">CE</button>
+                <button class="btn btn-primary" id="ac">Clear</button>
+                <button class="btn btn-primary" id="ok">OK</button>
+                <button class="btn btn-primary" id="back">Back</button>
+                <button class="btn btn-primary" id="exit">Exit</button>
+            </div>
+            <span id="Error"></span>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            var sum = "";
+
+            $('.dev-btn-number').on('click',
+                function() {
+                    sum = sum + $(this).val();
+                    if (sum.length > 8) {
+                        blockButtons(true);
+                    }
+                    $('#result p').html(sum);
+                });
+
+            $('#ac').on('click',
+                function() {
+                    sum = "";
+                    $('#result p').html("");
+                });
+
+            $('#ce').on('click',
+                function() {
+                    sum = $('#result p').html();
+                    sum = sum.slice(0, -1);
+                    $('#result p').html(sum);
+                });
+
+            $('#back').on('click',
+                function() {
+                    window.location.href = "/Atm/GetOperations/";
+                });
+
+            $('#exit').on('click',
+                function() {
+                    window.location.href = "/Atm/EnterAtm/";
+                });
+
+            $('#ok').on('click',
+                function() {
+                    sum = $('#result p').html();
+                    $.post({
+                        type: "POST",
+                        url: '/Atm/Withdraw?sum=' + sum,
+                        success: function(result) {
+                            if (result.success) {
+                                window.location.href = "/Atm/WithdrawReport?sum="+result.sum+"&balance="+result.balance;
+                            } else {
+                                window.location.href = "/Atm/WithdrawError/";
+                            }
+                        },
+                        error: function(httpRequest, textStatus, errorThrown) {
+                            alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
+                        }
+                    });
+                });
+
+            function blockButtons(block) {
+                var elements = document.getElementsByClassName("dev-btn-number");
+                for (var i = 0; i < elements.length; i++) {
+                    if (block) {
+                        elements[i].disabled = true;                      
+                    } else {
+                        elements[i].disabled = false;
+                    }
+                }
+            }
+        });
+    </script>
+}

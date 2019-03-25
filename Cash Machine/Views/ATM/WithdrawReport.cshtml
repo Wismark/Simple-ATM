@@ -1,0 +1,39 @@
+﻿
+<div class="container" id="calc">
+    <div class="container">
+        <div class="row d-inline-flex top-buffer">
+            <div class="col card-text">
+                <div>
+                    <h4>Withdraw report:</h4>
+                    <strong>
+                        <p>CardNumber: @ViewBag.CardNumber</p>
+                        <p>Withdrawal date: @ViewBag.Date </p>
+                        <p>Withdrawal sum: @ViewBag.Sum </p>
+                        <p>Card balance: @ViewBag.MoneyLeft</p>
+                    </strong>                                      
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" style='width: auto' id="exit">Exit</button>
+            <button class="btn btn-primary" style='width: auto' id="back">Back</button>
+        </div>
+        <span id="Error"></span>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#exit').on('click', function() {
+                window.location.href = "/Atm/EnterAtm/";
+            });
+            $('#back').on('click', function () {
+                window.location.href = "/Atm/GetOperations/";
+            });
+        });
+    </script>
+}

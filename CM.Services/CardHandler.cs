@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using CM.Entites.Entities;
 using CM.Services.interfaces.Abstract;
-using Domain.Entities;
 
 namespace CM.Services
 {
@@ -35,7 +35,6 @@ namespace CM.Services
             //byte[] salt = Encoding.ASCII.GetBytes("YYLmfY6IehjZMQbv5PehSMfV11CdQxLUF1bgIAdeQX");
             //byte[] pinCodeHash = Hash(pinCode, salt);
 
-
             if (_repository.Cards.Single(c => c.CardNumber == cardNumber).PinCode == pinCode)
             {
                 return true;
@@ -43,11 +42,24 @@ namespace CM.Services
             return false;
         }
 
-        
-
-        public void BlockCard(string cardNumber)
+        public bool RegisterOperation(string cardNumber, OperationType type)
         {
-            _repository.BlockCard(cardNumber);
+            return _repository.RegisterOperation(cardNumber, type); 
+        }
+
+        public bool Withdraw(string cardNumber, int sum)
+        {
+            return _repository.Withdraw(cardNumber, sum);
+        }
+
+        public decimal GetBalance(string cardNumber)
+        {
+           return _repository.Cards.Single(c => c.CardNumber == cardNumber).Balance;
+        }
+
+        public bool BlockCard(string cardNumber)
+        {
+           return _repository.BlockCard(cardNumber);
         }
 
 
@@ -66,5 +78,6 @@ namespace CM.Services
 
             return new SHA256Managed().ComputeHash(saltedValue);
         }
+
     }
 }

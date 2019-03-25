@@ -4,12 +4,13 @@
         <div class="row d-inline-flex top-buffer">
             <div class="col card-text">
                 <strong>
-                    <p>Card is blocked!</p>
+                    <p>Error during withdrawal! You may not have enough money..</p>
                 </strong>
             </div>
         </div>
         <div class="col">
             <button class="btn btn-primary" style='width: auto' id="exit">Exit</button>
+            <button class="btn btn-primary" style='width: auto' id="back">Back</button>
         </div>
         <span id="Error"></span>
     </div>
@@ -19,11 +20,13 @@
 @section scripts
 {
     <script type="text/javascript">
-
         $(document).ready(function () {
 
             $('#exit').on('click', function() {
                 window.location.href = "/Atm/EnterAtm/";
+            });
+            $('#back').on('click', function () {
+                window.location.href = "/Atm/Withdraw/";
             });
         });
     </script>

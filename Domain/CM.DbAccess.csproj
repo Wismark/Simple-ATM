@@ -57,9 +57,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CM.Entites\CM.Entites.csproj">
+    <ProjectReference Include="..\CM.Entites\CM.Entities.csproj">
       <Project>{e949d231-b795-42d5-bbb0-862e20507063}</Project>
-      <Name>CM.Entites</Name>
+      <Name>CM.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\CM.Services.interfaces\CM.Services.interfaces.csproj">
       <Project>{e742344c-8ad4-4996-90d5-b4c03d8b2c1f}</Project>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Entities
+namespace CM.Entites.Entities
 {
     public enum OperationType { Balance, Withdraw };
     public class Operation
@@ -10,5 +10,7 @@ namespace Domain.Entities
         public  DateTime OperationDate { get; set; }
 
         public OperationType OperationType { get; set; }
+
+        public int? WithdrawSum { get; set; }
     }
 }

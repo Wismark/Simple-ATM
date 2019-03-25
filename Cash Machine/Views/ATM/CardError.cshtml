@@ -1,18 +1,31 @@
 ﻿
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error!</title>
-</head>
-<body>
-<div>
-    <h2>Card does not exist or it is blocked!</h2>
+<div class="container" id="calc">
+    <div><h4>Error</h4></div>
+    <div class="container">
+        <div class="row d-inline-flex top-buffer">
+            <div class="col card-text">
+                <strong>
+                    <p>Card doesn't exist or it's blocked!</p>
+                </strong>
+            </div>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" style='width: auto' id="exit">Exit</button>
+        </div>
+        <span id="Error"></span>
+    </div>
 </div>
-</body>
-</html>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#exit').on('click', function() {
+                window.location.href = "/Atm/EnterAtm/";
+            });
+        });
+    </script>
+}

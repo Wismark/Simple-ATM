@@ -226,6 +226,10 @@
     <Content Include="Views\ATM\PinCodeCheck.cshtml" />
     <Content Include="Views\ATM\GetOperations.cshtml" />
     <Content Include="Views\ATM\CardIsBlockedError.cshtml" />
+    <Content Include="Views\ATM\Balance.cshtml" />
+    <Content Include="Views\ATM\Withdraw.cshtml" />
+    <Content Include="Views\ATM\WithdrawError.cshtml" />
+    <Content Include="Views\ATM\WithdrawReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

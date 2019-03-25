@@ -1,0 +1,39 @@
+﻿<div class="container" id="calc">
+    <div><h4>Balance</h4></div>
+    <div class="container">
+        <div class="row d-inline-flex top-buffer">
+            <div class="col card-text">
+                <strong>
+                    <p>Card: @ViewBag.CardNumber</p>
+                    <p>Today: @ViewBag.Date</p>
+                    <p>Balance: @ViewBag.Balance</p>
+                </strong>
+            </div>
+        </div>
+            <div class="col">
+                <button class="btn btn-primary" style='width: auto' id="back">Back</button>
+                <button class="btn btn-primary" style='width: auto' id="exit">Exit</button>
+            </div>
+        <span id="Error"></span>
+    </div>
+</div>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#back').on('click', function() {
+                window.location.href = "/Atm/GetOperations/";
+            });
+
+            $('#exit').on('click', function() {
+                window.location.href = "/Atm/EnterAtm/";
+            });
+        });
+    </script>
+}
+

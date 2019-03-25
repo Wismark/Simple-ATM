@@ -10,25 +10,45 @@
         </div>
             <span id="Error"></span>
         </div>
-    </div>
 </div>
 
 @section scripts
 {
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
 
-            $('#with').on('click', function () {
+            $('#with').on('click', function() {
+                    $.ajax({
+                        type: "Post",
+                        url: '/Atm/GetOperations?operation=1',
+                        dataType: "json",
+                        success: function(result) {
+                            window.location.href = "/Atm/Withdraw/";
+                        },
+                        error: function(httpRequest, textStatus, errorThrown) {
+                            alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
+                        }
+                    });
+                });
 
-            });
+            $('#bal').on('click', function() {
+                    $.ajax({
+                        type: "Post",
+                        url: '/Atm/GetOperations?operation=0',
+                        dataType: "json",
+                        success: function(result) {
+                            window.location.href = "/Atm/Balance/";
+                        },
+                        error: function(httpRequest, textStatus, errorThrown) {
+                            alert("Error: " + textStatus + " " + errorThrown + " " + httpRequest);
+                        }
+                    });
+                });
 
-            $('#bal').on('click', function () {
-
-            });
-
-            $('#exit').on('click', function () {
-                window.location.href = "/Atm/EnterAtm/";
-            });
+            $('#exit').on('click',
+                function() {
+                    window.location.href = "/Atm/EnterAtm/";
+                });
         });
     </script>
 }

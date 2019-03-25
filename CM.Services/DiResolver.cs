@@ -21,12 +21,12 @@ namespace CM.Services
             return Container;
         }
 
-        public static void BindDependency()
+        public static void BindDependency(Assembly assembly)
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<EfCardRepository>().As<ICardRepository>();
             builder.RegisterType<CardHandler>().As<ICardHandler>();
-            builder.RegisterControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterControllers(assembly);
             Container = builder.Build();
         }
 

@@ -1,5 +1,5 @@
-﻿using Domain.Entities;
-using System.Data.Entity;
+﻿using System.Data.Entity;
+using CM.Entites.Entities;
 
 namespace Domain.Concrete
 {
@@ -7,10 +7,11 @@ namespace Domain.Concrete
     {
         public EfDbContext() : base("DbConnection")
         {
-          //  Database.SetInitializer(new EfDbContextInitializer());
+         //   Database.SetInitializer(new EfDbContextInitializer());
         }
 
         public DbSet<Card> Cards { get; set; }
+        public DbSet<Operation> Operation { get; set; }
     }
 
 
