@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CM.Entites.Entities
+namespace CM.Entites
 {
     public enum OperationType { Balance, Withdraw };
     public class Operation

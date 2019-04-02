@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using CM.Entites.Entities;
-using CM.Services.interfaces.Abstract;
+using CM.Entites;
+using CM.Services.interfaces;
 
-namespace Domain.Concrete
+namespace Domain
 {
     public class EfCardRepository : ICardRepository
     {
         readonly EfDbContext _context = new EfDbContext();
-        public IQueryable<Card> Cards
-        {
-            get { return _context.Cards; }
-        }
+        public IQueryable<Card> Cards => _context.Cards;
+
         public bool BlockCard(string cardNumber)
         {
             try

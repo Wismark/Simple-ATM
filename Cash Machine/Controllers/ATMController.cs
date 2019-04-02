@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
-using CM.Entites.Entities;
-using CM.Services.interfaces.Abstract;
+using CM.Entites;
+using CM.Services.interfaces;
 
 namespace Cash_Machine.Controllers
 {
@@ -116,7 +116,7 @@ namespace Cash_Machine.Controllers
             if (Session["PinCodeCorrect"] is bool)
             {
                 var cardNumber = Session["CardNumber"] as string;
-                ViewBag.CardNumber =string.Format($"{cardNumber.Substring(0, 4)}-{cardNumber.Substring(4, 4)}-{cardNumber.Substring(8, 4)}-{cardNumber.Substring(12, 4)}");
+                ViewBag.CardNumber =string.Format($"{cardNumber?.Substring(0, 4)}-{cardNumber?.Substring(4, 4)}-{cardNumber?.Substring(8, 4)}-{cardNumber?.Substring(12, 4)}");
                 ViewBag.Date = DateTime.Now.Date.ToString("d");
                 ViewBag.Balance = (_cardService.GetBalance(cardNumber).ToString("C"));
                 return View();
@@ -143,7 +143,7 @@ namespace Cash_Machine.Controllers
                 if (sum > 0)
                 {
                     if (_cardService.Withdraw(cardNumber, sum))
-                    return Json(new {success = true, sum = sum  });
+                    return Json(new {success = true, sum });
                 }
 
                 return Json(new {success = false});
@@ -166,7 +166,7 @@ namespace Cash_Machine.Controllers
             if (Session["PinCodeCorrect"] is bool)
             {
                 var cardNumber = Session["CardNumber"] as string;
-                ViewBag.CardNumber = string.Format($"{cardNumber.Substring(0, 4)}-{cardNumber.Substring(4, 4)}-{cardNumber.Substring(8, 4)}-{cardNumber.Substring(12, 4)}");
+                ViewBag.CardNumber = string.Format($"{cardNumber?.Substring(0, 4)}-{cardNumber?.Substring(4, 4)}-{cardNumber?.Substring(8, 4)}-{cardNumber?.Substring(12, 4)}");
                 ViewBag.Sum = sum.ToString("C");
                 ViewBag.Date = DateTime.Now.Date.ToString("d");
                 ViewBag.MoneyLeft = (_cardService.GetBalance(cardNumber).ToString("C"));

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CM.Entites.Entities;
+﻿using CM.Entites;
 
-namespace CM.Services.interfaces.Abstract
+namespace CM.Services.interfaces
 {
     public  interface ICardHandler
     {

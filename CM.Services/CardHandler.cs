@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using CM.Entites.Entities;
-using CM.Services.interfaces.Abstract;
+﻿using System.Linq;
+using CM.Entites;
+using CM.Services.interfaces;
 
 namespace CM.Services
 {
     public class CardHandler: ICardHandler
     {
         private readonly ICardRepository _repository;
-        private string _cardNumber;
 
         public CardHandler(ICardRepository repo)
         {
@@ -24,7 +18,6 @@ namespace CM.Services
             var card = _repository.Cards.SingleOrDefault(c => c.CardNumber == cardNumber);
             if (card != null && !card.IsBlocked)
             {
-                _cardNumber = cardNumber;
                 return true;
             }
             return false;

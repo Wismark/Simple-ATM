@@ -231,10 +231,7 @@
     <Content Include="Views\ATM\WithdrawError.cshtml" />
     <Content Include="Views\ATM\WithdrawReport.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
@@ -247,10 +244,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CM.DiResolver\CM.DiResolver.csproj">
-      <Project>{9daae637-9fd9-477b-ba29-00986b2d6e94}</Project>
-      <Name>CM.DiResolver</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CM.Services.interfaces\CM.Services.interfaces.csproj">
       <Project>{e742344c-8ad4-4996-90d5-b4c03d8b2c1f}</Project>
       <Name>CM.Services.interfaces</Name>

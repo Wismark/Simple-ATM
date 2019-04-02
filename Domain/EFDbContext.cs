@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using CM.Entites.Entities;
+using CM.Entites;
 
-namespace Domain.Concrete
+namespace Domain
 {
     public class EfDbContext : DbContext
     {

@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CM.Entites.Entities;
+﻿using System.Linq;
+using CM.Entites;
 
-namespace CM.Services.interfaces.Abstract
+namespace CM.Services.interfaces
 {
     public interface ICardRepository
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CM.Entites.Entities
+namespace CM.Entites
 {
     public class Card
     {

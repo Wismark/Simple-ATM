@@ -48,8 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Concrete\EFCardRepository.cs" />
-    <Compile Include="Concrete\EFDbContext.cs" />
+    <Compile Include="EFCardRepository.cs" />
+    <Compile Include="EFDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
