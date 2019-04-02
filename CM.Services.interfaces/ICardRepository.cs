@@ -10,5 +10,7 @@ namespace CM.Services.interfaces
         bool RegisterOperation(string cardNumber, OperationType type);
         bool Withdraw(string cardNumber, int sum);
         byte[] Hash(string value);
+        int GetAttemptsNumber(string cardNumber);
+        bool UpdateAttemptsNumber(string cardNumber, int num);
     }
 }

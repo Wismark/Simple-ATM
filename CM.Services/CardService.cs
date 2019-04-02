@@ -4,11 +4,11 @@ using CM.Services.interfaces;
 
 namespace CM.Services
 {
-    public class CardHandler: ICardHandler
+    public class CardService: ICard
     {
         private readonly ICardRepository _repository;
 
-        public CardHandler(ICardRepository repo)
+        public CardService(ICardRepository repo)
         {
             _repository = repo;
         }
@@ -16,7 +16,7 @@ namespace CM.Services
         public bool CheckCard(string cardNumber)
         {
             var card = _repository.Cards.SingleOrDefault(c => c.CardNumber == cardNumber);
-            if (card != null && !card.IsBlocked)
+            if (card != null && card.AttemptsCount!=0)
             {
                 return true;
             }
@@ -41,6 +41,16 @@ namespace CM.Services
         public decimal GetBalance(string cardNumber)
         {
            return _repository.Cards.Single(c => c.CardNumber == cardNumber).Balance;
+        }
+
+        public int GetAttemptsNumber(string cardNumber)
+        {
+            return _repository.GetAttemptsNumber(cardNumber);
+        }
+
+        public bool UpdateAttemptsNumber(string cardNumber, int num)
+        {
+            return _repository.UpdateAttemptsNumber(cardNumber, num);
         }
 
         public bool BlockCard(string cardNumber)

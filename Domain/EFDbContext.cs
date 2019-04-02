@@ -10,7 +10,7 @@ namespace Domain
     {
         public EfDbContext() : base("DbConnection")
         {
-           // Database.SetInitializer(new EfDbContextInitializer());
+            Database.SetInitializer(new EfDbContextInitializer());
         }
 
         public DbSet<Card> Cards { get; set; }
@@ -26,21 +26,21 @@ namespace Domain
             {
                 Balance = 200.12m,
                 CardNumber = "5555555555555555",
-                IsBlocked = false,
+                AttemptsCount = 4,
                 PinCode = Hash("1111")
             };
             var card2 = new Card()
             {
                 Balance = 0.12m,
                 CardNumber = "1555555555555555",
-                IsBlocked = false,
+                AttemptsCount = 4,
                 PinCode = Hash("2222")
             }; 
             var card3 = new Card()
             {
                 Balance = 999999m,
                 CardNumber = "2222222222222222",
-                IsBlocked = false,
+                AttemptsCount = 4,
                 PinCode = Hash("1212")
             }; 
 

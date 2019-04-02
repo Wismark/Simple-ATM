@@ -19,7 +19,7 @@ namespace CM.Services
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<EfCardRepository>().As<ICardRepository>();
-            builder.RegisterType<CardHandler>().As<ICardHandler>();
+            builder.RegisterType<CardService>().As<ICard>();
             builder.RegisterControllers(assembly);
             Container = builder.Build();
         }

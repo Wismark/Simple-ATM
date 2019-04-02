@@ -7,8 +7,10 @@ namespace Cash_Machine.Controllers
 {
     public class AtmController : Controller
     {
-        private readonly ICardHandler _cardService;
-        public AtmController(ICardHandler handler)
+        private readonly ICard _cardService;
+        private static string _cardNumber;
+
+        public AtmController(ICard handler)
         {
             _cardService = handler;
         }
@@ -23,7 +25,8 @@ namespace Cash_Machine.Controllers
         {
             if (_cardService.CheckCard(cardNumber))
             {
-                Session["CardNumber"] = cardNumber;
+                _cardNumber = cardNumber;
+                Session["CardChecksOut"] = true;
                 return Json(new { success = true });
             }
 
@@ -33,9 +36,9 @@ namespace Cash_Machine.Controllers
         [HttpGet]
         public ActionResult PinCodeCheck()
         {
-            if (Session["CardNumber"] is string )
+            if (Session["CardChecksOut"] is bool )
             {
-                Session["AttemptsNumber"] = 4;
+                Session["PinCodeCheck"] = true;
                 return View();
             }
             return new HttpNotFoundResult("404");
@@ -44,22 +47,23 @@ namespace Cash_Machine.Controllers
         [HttpPost]
         public JsonResult PinCodeCheck(string pinCode)
         {
-            if((Session["AttemptsNumber"] is null)) return Json(new { error = true });
+            if((Session["PinCodeCheck"] is null)) return Json(new { error = true });
 
-            string cardNumber = Session["CardNumber"] as string;
-            
-            int attemptsNum = (int)Session["AttemptsNumber"];
+            string cardNumber = _cardNumber; 
+
+            int attemptsNum = _cardService.GetAttemptsNumber(cardNumber);
 
             if(cardNumber==null) return Json(new { error = true });
 
             if (_cardService.CheckPinCode(pinCode, cardNumber)) 
             {
+                _cardService.UpdateAttemptsNumber(cardNumber, 4);
                 Session["PinCodeCorrect"] = true;
                 return Json(new { success = true });
             }
                
             attemptsNum--;
-            Session["AttemptsNumber"] = attemptsNum;
+            _cardService.UpdateAttemptsNumber(cardNumber, attemptsNum);
             if (attemptsNum == 0)
             {
                 return Json(_cardService.BlockCard(cardNumber) ? new { blocked = true } : new { blocked = false });
@@ -89,7 +93,7 @@ namespace Cash_Machine.Controllers
         {
             if (Session["PinCodeCorrect"] is bool)
             {
-                var cardNumber = Session["CardNumber"] as string;
+                var cardNumber = _cardNumber; 
                 if (operation == OperationType.Balance)
                 {
                     _cardService.RegisterOperation(cardNumber, operation);
@@ -102,7 +106,7 @@ namespace Cash_Machine.Controllers
         [HttpGet]
         public ActionResult CardIsBlockedError()
         {
-            if (Session["CardNumber"] is string)
+            if (Session["CardChecksOut"] is bool)
             {
                 Session.Clear();
                 return View();
@@ -115,7 +119,7 @@ namespace Cash_Machine.Controllers
         {
             if (Session["PinCodeCorrect"] is bool)
             {
-                var cardNumber = Session["CardNumber"] as string;
+                var cardNumber = _cardNumber;
                 ViewBag.CardNumber =string.Format($"{cardNumber?.Substring(0, 4)}-{cardNumber?.Substring(4, 4)}-{cardNumber?.Substring(8, 4)}-{cardNumber?.Substring(12, 4)}");
                 ViewBag.Date = DateTime.Now.Date.ToString("d");
                 ViewBag.Balance = (_cardService.GetBalance(cardNumber).ToString("C"));
@@ -139,7 +143,7 @@ namespace Cash_Machine.Controllers
         {
             if (Session["PinCodeCorrect"] is bool)
             {
-                var cardNumber = Session["CardNumber"] as string;
+                var cardNumber = _cardNumber; 
                 if (sum > 0)
                 {
                     if (_cardService.Withdraw(cardNumber, sum))
@@ -165,7 +169,7 @@ namespace Cash_Machine.Controllers
         {
             if (Session["PinCodeCorrect"] is bool)
             {
-                var cardNumber = Session["CardNumber"] as string;
+                var cardNumber = _cardNumber; 
                 ViewBag.CardNumber = string.Format($"{cardNumber?.Substring(0, 4)}-{cardNumber?.Substring(4, 4)}-{cardNumber?.Substring(8, 4)}-{cardNumber?.Substring(12, 4)}");
                 ViewBag.Sum = sum.ToString("C");
                 ViewBag.Date = DateTime.Now.Date.ToString("d");

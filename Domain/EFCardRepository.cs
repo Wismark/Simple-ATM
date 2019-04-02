@@ -16,7 +16,7 @@ namespace Domain
         {
             try
             {
-                _context.Cards.Single(c => c.CardNumber == cardNumber).IsBlocked = true;
+                _context.Cards.Single(c => c.CardNumber == cardNumber).AttemptsCount = 0;
                 _context.SaveChanges();
             }
             catch
@@ -52,36 +52,42 @@ namespace Domain
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
-                try
+                var balance = _context.Cards.Single(c=>c.CardNumber==cardNumber).Balance;
+                if (sum > balance && sum > 0) return false;
                 {
-                    var balance = _context.Cards.Single(c=>c.CardNumber==cardNumber).Balance;
-                    if (sum <= balance) 
+                    balance = balance - sum;
+                    _context.Cards.Single(c => c.CardNumber == cardNumber).Balance = balance;
+                   
+                    var operation = new Operation()
                     {
-                        balance = balance - sum;
-                        _context.Cards.Single(c => c.CardNumber == cardNumber).Balance = balance;
-                       
-                        var operation = new Operation()
-                        {
-                            OperationDate = DateTime.Now,
-                            OperationType = OperationType.Withdraw,
-                            CardId = _context.Cards.Single(c => c.CardNumber == cardNumber).CardId,
-                            WithdrawSum = sum
-                        };
+                        OperationDate = DateTime.Now,
+                        OperationType = OperationType.Withdraw,
+                        CardId = _context.Cards.Single(c => c.CardNumber == cardNumber).CardId,
+                        WithdrawSum = sum
+                    };
 
-                        _context.Operation.Add(operation);
-                        _context.SaveChanges();
+                    _context.Operation.Add(operation);
+                    _context.SaveChanges();
 
-                        transaction.Commit();                       
-                        return true;
-                    }
-                    throw new Exception();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    return false;
+                    transaction.Commit();                       
+                    return true;
                 }
             }
+        }
+
+        public int GetAttemptsNumber(string cardNumber)
+        {
+            return _context.Cards.Single(c => c.CardNumber == cardNumber).AttemptsCount;
+        }
+
+        public bool UpdateAttemptsNumber(string cardNumber, int num)
+        {
+            if (num >= 0)
+            {
+                _context.Cards.Single(c => c.CardNumber == cardNumber).AttemptsCount = num;
+                return true;
+            }
+            return false;
         }
 
         public byte[] Hash(string value)

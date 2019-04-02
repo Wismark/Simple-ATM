@@ -8,7 +8,7 @@ namespace CM.Entites
 
         public string CardNumber { get; set; }
         
-        public bool IsBlocked { get; set; }
+        public int AttemptsCount { get; set; }
 
         public byte[] PinCode { get; set; }
 

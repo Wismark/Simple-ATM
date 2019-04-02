@@ -2,7 +2,7 @@
 
 namespace CM.Services.interfaces
 {
-    public  interface ICardHandler
+    public  interface ICard
     {
         bool CheckPinCode(string pin, string card);
         bool CheckCard(string card);
@@ -10,5 +10,7 @@ namespace CM.Services.interfaces
         bool RegisterOperation(string cardNumber, OperationType type);
         bool Withdraw(string cardNumber, int sum);
         decimal GetBalance(string cardNumber);
+        int GetAttemptsNumber(string cardNumber);
+        bool UpdateAttemptsNumber(string cardNumber, int num);
     }
 }
